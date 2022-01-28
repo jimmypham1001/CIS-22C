@@ -13,7 +13,7 @@ public class Counter
 	private int count;
 	private int min;
 	private int max;
-	static boolean move = false;
+	boolean move = false;
 	
 
     /**
@@ -42,8 +42,8 @@ public class Counter
     	if (max <= min) {
         	throw new CounterInitializationException("It is less than or equal to min.");
         }
-    	min = 0;
-    	max = 0;
+    	this.min = min;
+    	this.max = max;
     	count = min;
     }
     
@@ -59,7 +59,8 @@ public class Counter
         if (otherObject instanceof Counter)
         {
             // YOUR CODE GOES HERE
-        	if (Point.class.isInstance(move))
+        	Counter other = (Counter) otherObject;
+        	if (count == other.count && min == other.min && max == other.max && move == other.move)
         	{
         		return true;
         	}
@@ -77,19 +78,13 @@ public class Counter
     public void increase()
     {
         // ADD CODE TO INCREASE THE VALUE OF THE COUNTER
-    	if(this.move == true)
+    	count++;
+    	if(count > max)
     	{
-    		this.count++;
-    		if (count > 0)
-    		{
-    			count = 0;
-    		}
-    		else if (this.move == false)
-    		{
-    			this.count++;
-    		}
-    	}
-  
+    		count = min;
+    		move = true;
+    	} 
+    	else move = false;
     }
  
  
@@ -99,18 +94,13 @@ public class Counter
     public void decrease()
     {
         // ADD CODE TO INCREASE THE VALUE OF THE COUNTER
-    	if(this.move == true)
+    	count--;
+    	if(count < min)
     	{
-    		this.count--;
-    		if (count < 0)
-    		{
-    			count = 0;
-    		}
-    		else if (this.move == false)
-    		{
-    			this.count--;
-    		}
-    	}
+    		count = max;
+    		move = true;
+    	} 
+    	else move = false;
     }
     
     /**
