@@ -18,14 +18,9 @@ public class Rational
      */
     public Rational()
     {       
-        if (dem == 0) {
-        	throw new IndexOutOfBoundsException("There is a zero on a denominator.");
-        }
-        int g = gcd(num, dem);
-        num = num /g;
-        dem = dem /g;
-        
-        normalize();
+    	  
+        num = 1;
+        dem = 1;
     }
 
     /**
@@ -37,11 +32,10 @@ public class Rational
     {
         // ADD CODE TO THE ALTERNATE CONSTRUCTOR
     	if (d == 0) {
-    		throw new IndexOutOfBoundsException("There is a zero on a denominator.");
+    		throw new ZeroDenominatorException("There is a zero on a denominator.");
     	}
-    	int g = gcd(n, d);
-    	num = n   / g;
-    	dem = d   / g;
+    	num = n;
+    	dem = d;
     	
     	normalize();
     	
@@ -122,7 +116,7 @@ public class Rational
         // CHANGE THE RETURN TO SOMETHING APPROPRIATE
     	
     	
-        return this.add(other.negate());
+    	return add(other.negate());
     }
 
     /**
@@ -134,7 +128,10 @@ public class Rational
     public Rational multiply(Rational other)
     {       
         // ADD NEW CODE AND CHANGE THE RETURN TO SOMETHING APPROPRIATE
-        return new Rational(this.num * other.num, this.dem * other.dem);
+        int numerator = num * other.getNumerator();
+        int denominator = dem * other.getDenominator();
+        
+        return new Rational(numerator, denominator);
     }
         
  
@@ -147,7 +144,7 @@ public class Rational
     public Rational divide(Rational other)
     {               
         // CHANGE THE RETURN TO SOMETHING APPROPRIATE
-        return this.multiply(other.invert());
+    	return multiply(other.invert());
     }
      
  
@@ -161,10 +158,13 @@ public class Rational
     private void normalize()
     {
         // ADD CODE TO NORMALIZE THE RATIONAL NUMBER
-    	Rational norm = this.negate();
-    	num = norm.num;
-    	dem = norm.dem;
-   
+    	int absNum = Math.abs(num);
+    	int absDem = Math.abs(dem);
+    	int signDem = dem/absDem;
+    	
+    	int divideBy = gcd(absNum, absDem);
+    	num = (num / divideBy) * signDem;
+    	dem = (dem / divideBy) * signDem;
     }
     
     /**
@@ -192,3 +192,4 @@ public class Rational
     
     
 }
+
